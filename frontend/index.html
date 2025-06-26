@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Client-Contact Manager</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <h1>Client-Contact Manager</h1>
+    <div id="app">
+        <!-- Tabs for Clients/Contacts -->
+        <div class="tabs">
+            <button onclick="showTab('clients')">Clients</button>
+            <button onclick="showTab('contacts')">Contacts</button>
+        </div>
+
+        <!-- Clients Tab -->
+        <div id="clients" class="tab-content">
+            <h2>Clients</h2>
+            <button onclick="loadClientForm()">Add Client</button>
+            <div id="client-list"></div>
+            <div id="client-form-container" style="display:none;"></div>
+        </div>
+
+        <!-- Contacts Tab -->
+        <div id="contacts" class="tab-content" style="display:none;">
+            <h2>Contacts</h2>
+            <button onclick="loadContactForm()">Add Contact</button>
+            <div id="contact-list"></div>
+            <div id="contact-form-container" style="display:none;"></div>
+        </div>
+    </div>
+    <script src="js/clients.js"></script>
+    <script src="js/contacts.js"></script>
+</body>
+</html>
