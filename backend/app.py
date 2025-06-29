@@ -111,6 +111,54 @@ def contacts():
         finally:
             conn.close()
 
+@app.route('/clients/<int:client_id>/contacts', methods=['GET'])
+def get_client_contacts(client_id):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT contacts.id, contacts.name, contacts.surname, contacts.email
+        FROM contacts
+        JOIN client_contact ON contacts.id = client_contact.contact_id
+        WHERE client_contact.client_id = ?
+        ORDER BY contacts.surname ASC, contacts.name ASC
+    ''', (client_id,))
+    contacts = [dict(row) for row in cursor.fetchall()]
+    conn.close()
+    return jsonify(contacts)
+
+@app.route('/client_contact/unlink', methods=['POST'])
+def unlink_contact():
+    data = request.json
+    client_id = data.get('client_id')
+    contact_id = data.get('contact_id')
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM client_contact WHERE client_id = ? AND contact_id = ?', (client_id, contact_id))
+    conn.commit()
+    conn.close()
+    return jsonify({'success': True})
+
+@app.route('/client_contact/link', methods=['POST'])
+def link_contact():
+    data = request.json
+    client_id = data.get('client_id')
+    contact_id = data.get('contact_id')
+    if not client_id or not contact_id:
+        return jsonify({'success': False, 'error': 'Missing client or contact ID.'}), 400
+    conn = get_db()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            "INSERT OR IGNORE INTO client_contact (client_id, contact_id) VALUES (?, ?)",
+            (client_id, contact_id)
+        )
+        conn.commit()
+        return jsonify({'success': True})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+    finally:
+        conn.close()
+
 # Add similar endpoints for linking clients and contacts
 
 if __name__ == '__main__':
