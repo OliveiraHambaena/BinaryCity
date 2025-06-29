@@ -13,7 +13,7 @@ async function fetchClients() {
     html += '</table>';
 
     document.getElementById('client-list').innerHTML = 
-        clients.length ? html : '<p>No clients found.</p>';
+        clients.length ? html : '<p>No client(s) found.</p>';
 }
 
 // Load on startup
