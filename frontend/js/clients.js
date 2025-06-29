@@ -1,5 +1,5 @@
 async function fetchClients() {
-    const response = await fetch('../api/clients/list.php');
+    const response = await fetch('http://localhost:5000/clients');
     const clients = await response.json();
     
     let html = '<table><tr><th>Name</th><th>Code</th><th>Linked Contacts</th></tr>';
@@ -57,9 +57,10 @@ function loadClientForm() {
     document.getElementById('client-form').onsubmit = async function(e) {
         e.preventDefault();
         const formData = new FormData(this);
-        const response = await fetch('../backend/clients.php?action=add', {
+        const response = await fetch('http://localhost:5000/clients', {
             method: 'POST',
-            body: formData
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: formData.get('name') })
         });
         const result = await response.json();
         if (result.success) {

@@ -1,23 +1,16 @@
-function loadContacts() {
-    fetch('../backend/contacts.php?action=list')
-        .then(response => response.json())
-        .then(data => {
-            const listDiv = document.getElementById('contact-list');
-            if (data.length === 0) {
-                listDiv.innerHTML = '<p>No contacts found.</p>';
-                return;
-            }
-            let html = '<table><tr><th>Name</th><th>Surname</th><th>Email</th></tr>';
-            data.forEach(contact => {
-                html += `<tr>
-                    <td>${contact.name}</td>
-                    <td>${contact.surname}</td>
-                    <td>${contact.email}</td>
-                </tr>`;
-            });
-            html += '</table>';
-            listDiv.innerHTML = html;
-        });
+async function fetchContacts() {
+    const response = await fetch('http://localhost:5000/contacts');
+    const contacts = await response.json();
+    let html = '<table><tr><th>Name</th><th>Surname</th><th>Email</th></tr>';
+    contacts.forEach(contact => {
+        html += `<tr>
+            <td>${contact.name}</td>
+            <td>${contact.surname}</td>
+            <td>${contact.email}</td>
+        </tr>`;
+    });
+    html += '</table>';
+    document.getElementById('contact-list').innerHTML = contacts.length ? html : '<p>No contacts found.</p>';
 }
 
 function loadContactForm() {
@@ -37,14 +30,19 @@ function loadContactForm() {
     document.getElementById('contact-form').onsubmit = async function(e) {
         e.preventDefault();
         const formData = new FormData(this);
-        const response = await fetch('../backend/contacts.php?action=add', {
+        const response = await fetch('http://localhost:5000/contacts', {
             method: 'POST',
-            body: formData
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: formData.get('name'),
+                surname: formData.get('surname'),
+                email: formData.get('email')
+            })
         });
         const result = await response.json();
         if (result.success) {
             hideContactForm();
-            loadContacts();
+            fetchContacts();
         } else {
             document.getElementById('contact-form-error').textContent = result.error || 'Error adding contact.';
         }
@@ -55,5 +53,5 @@ function hideContactForm() {
     document.getElementById('contact-form-container').style.display = 'none';
 }
 
-// Optionally load on startup or when switching tabs
-// document.addEventListener('DOMContentLoaded', loadContacts);
+// Load contacts on page load
+document.addEventListener('DOMContentLoaded', fetchContacts);
