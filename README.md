@@ -36,38 +36,9 @@
 
    - Open [http://localhost:8000/index.html](http://localhost:8000/index.html) in your browser.
 
-## Project Structure
-
-```
-BinaryCity/
-│
-├── backend/
-│   └── app.py
-│
-├── frontend/
-│   ├── index.html
-│   ├── css/
-│   │   └── style.css
-│   └── js/
-│       ├── clients.js
-│       └── contacts.js
-│
-└── README.md
-```
-
 ## Features
 
 - Add, view, and delete clients and contacts
 - Link/unlink contacts to clients
 - Auto-generated client codes
 - SQLite database (no setup needed)
-
-## Notes
-
-- To stop either server, press `Ctrl+C` in the terminal window.
-- If you change backend code, restart the Flask server.
-- If you change frontend code, refresh your browser.
-
----
-
-**Enjoy using your Client-Contact Manager!**
