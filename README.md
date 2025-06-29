@@ -1,6 +1,6 @@
 # BinaryCity Client-Contact Manager
 
-## Prerequisites
+## MUST_HAVES
 
 - **Python 3.8+** installed
 - **pip** (comes with Python)
