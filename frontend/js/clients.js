@@ -10,6 +10,7 @@ async function fetchClients() {
             <td>
                 <button onclick="showClientContacts(${client.id})">View Contacts</button>
                 <button onclick="showLinkContactForm(${client.id})">Link Contact</button>
+                <button onclick="deleteClient(${client.id})" style="background:#dc3545;">Delete</button>
             </td>
         </tr>`;
     });
@@ -166,4 +167,12 @@ async function showLinkContactForm(clientId) {
 
 function hideLinkContactForm() {
     document.getElementById('client-contacts-list').innerHTML = '';
+}
+
+async function deleteClient(clientId) {
+    if (!confirm('Are you sure you want to delete this client?')) return;
+    await fetch(`http://localhost:5000/clients/${clientId}`, {
+        method: 'DELETE'
+    });
+    fetchClients();
 }

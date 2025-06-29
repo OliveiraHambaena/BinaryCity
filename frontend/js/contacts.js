@@ -1,12 +1,15 @@
 async function fetchContacts() {
     const response = await fetch('http://localhost:5000/contacts');
     const contacts = await response.json();
-    let html = '<table><tr><th>Name</th><th>Surname</th><th>Email</th></tr>';
+    let html = '<table><tr><th>Name</th><th>Surname</th><th>Email</th><th>Actions</th></tr>';
     contacts.forEach(contact => {
         html += `<tr>
             <td>${contact.name}</td>
             <td>${contact.surname}</td>
             <td>${contact.email}</td>
+            <td>
+                <button onclick="deleteContact(${contact.id})" style="background:#dc3545;">Delete</button>
+            </td>
         </tr>`;
     });
     html += '</table>';
@@ -51,6 +54,14 @@ function loadContactForm() {
 
 function hideContactForm() {
     document.getElementById('contact-form-container').style.display = 'none';
+}
+
+async function deleteContact(contactId) {
+    if (!confirm('Are you sure you want to delete this contact?')) return;
+    await fetch(`http://localhost:5000/contacts/${contactId}`, {
+        method: 'DELETE'
+    });
+    fetchContacts();
 }
 
 // Load contacts on page load

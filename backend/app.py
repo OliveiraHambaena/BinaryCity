@@ -159,6 +159,24 @@ def link_contact():
     finally:
         conn.close()
 
+@app.route('/clients/<int:client_id>', methods=['DELETE'])
+def delete_client(client_id):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM clients WHERE id = ?', (client_id,))
+    conn.commit()
+    conn.close()
+    return jsonify({'success': True})
+
+@app.route('/contacts/<int:contact_id>', methods=['DELETE'])
+def delete_contact(contact_id):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM contacts WHERE id = ?', (contact_id,))
+    conn.commit()
+    conn.close()
+    return jsonify({'success': True})
+
 # Add similar endpoints for linking clients and contacts
 
 if __name__ == '__main__':
