@@ -25,6 +25,10 @@ document.addEventListener('DOMContentLoaded', fetchClients);
 function showTab(tab) {
     document.getElementById('clients').style.display = (tab === 'clients') ? 'block' : 'none';
     document.getElementById('contacts').style.display = (tab === 'contacts') ? 'block' : 'none';
+
+    // Highlight active tab
+    document.querySelectorAll('.tabs button').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`.tabs button[onclick="showTab('${tab}')"]`).classList.add('active');
 }
 
 function loadClients() {
@@ -33,7 +37,7 @@ function loadClients() {
         .then(data => {
             const listDiv = document.getElementById('client-list');
             if (data.length === 0) {
-                listDiv.innerHTML = '<p>No clients found.</p>';
+                listDiv.innerHTML = '<p>No client(s) found.</p>';
                 return;
             }
             let html = '<table><tr><th>Name</th><th>Code</th></tr>';
@@ -126,7 +130,7 @@ async function showLinkContactForm(clientId) {
 
     let html = '<h4>Link a Contact</h4>';
     if (unlinkedContacts.length === 0) {
-        html += '<p>No unlinked contacts available.</p>';
+        html += '<p>No unlinked contact(s) available.</p>';
     } else {
         html += `<form id="link-contact-form">
             <select name="contact_id" required>

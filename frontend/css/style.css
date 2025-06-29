@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background: #a25406 !important;
+    background: #ffeedd !important;
     margin: 0;
     padding: 0;
 }
@@ -96,6 +96,7 @@ input[type="text"], input[type="email"], select {
 
 #client-contacts-list {
     margin-top: 18px;
+    background-color: #fff1e3;
 }
 
 a {
@@ -106,4 +107,11 @@ a {
 
 a:hover {
     text-decoration: underline;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 16px;
+    text-align: center;
+    color: #333;
 }
